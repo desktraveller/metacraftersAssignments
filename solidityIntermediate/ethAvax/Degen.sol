@@ -1,4 +1,3 @@
-
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.18;
 
@@ -16,7 +15,7 @@ interface IERC20 {
     function transferFrom(address from, address to, uint256 value) external returns (bool);
     }
 
-contract brickheadCoin is IERC20 { 
+contract erc20Token is IERC20 { 
 
     uint public totalSupply;
     mapping(address => uint) balances;
@@ -29,10 +28,10 @@ contract brickheadCoin is IERC20 {
     }
 
     function name() external pure returns (string memory) {
-        return "brickheadCoin";
+        return "Degen";
     }
     function symbol() external pure returns (string memory) {
-        return "BH";
+        return "DGN";
     }
         
     function balanceOf(address account) external view returns (uint256) {
@@ -40,7 +39,7 @@ contract brickheadCoin is IERC20 {
     }
         
     function transfer(address recipient , uint256 value) external returns (bool) {
-        require(balances[msg.sender] >= value, "You don't have enough BrickheadCoins");
+        require(balances[msg.sender] >= value, "You don't have enough DGN");
         balances[msg.sender] -= value;
         balances[recipient]+= value;
         emit Transfer(msg.sender, recipient, value);
@@ -60,8 +59,8 @@ contract brickheadCoin is IERC20 {
     }
 
     function transferFrom(address sender, address recipient, uint256 value) external returns (bool){
-        require(allowances[sender][msg.sender] >= value, "the user has not permitted you to spend these amount oncoins");
-        require(balances[sender] >= value, "the address does not have enough tokens");
+        require(allowances[sender][msg.sender] >= value, "the user has not permitted you to spend these amount of DGN");
+        require(balances[sender] >= value, "the address does not have enough DGN");
         balances[sender] -= value;
         balances[recipient] += value;
         allowances[sender][msg.sender] -= value;
@@ -83,6 +82,37 @@ contract brickheadCoin is IERC20 {
         totalSupply -=amount;
     
     }  
+}
 
+contract Degen is erc20Token {
 
+    storeItem[] storeItems;
+
+    mapping(address => mapping(uint => uint)) ownership;
+
+    struct  storeItem {
+        string name;
+        uint price;
+    }
+
+    function buyStoreItem(uint _id) public {
+        require(balances[msg.sender] >= storeItems[_id].price, " you don't have enough DGN");
+        ownership[msg.sender][_id] += 1;
+        balances[msg.sender] -= storeItems[_id].price;
+        balances[owner] += storeItems[_id].price;
+        emit Transfer(msg.sender, owner, storeItems[_id].price);
+    }
+
+    function windowShopping() public view returns (storeItem[] memory) {
+        return storeItems;
+    }
+
+    function checkOwnership(address owner, uint itemId) public view returns (uint) {
+        return ownership[owner][itemId];
+    }
+
+    constructor() {
+        storeItems.push(storeItem("Steph Curry's Jersey", 100));
+        storeItems.push(storeItem("Lebron James' Jersey", 200));
+    }
 }
