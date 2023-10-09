@@ -32,7 +32,7 @@ If you'd like to explore the contract or interact with it on the Avalanche Fuji 
 
 4. **Compile and Import**: Compile the contract and import it from the Avalanche Fuji testnet using Remix. Ensure you have the correct MetaMask wallet configured for the Fuji testnet.
 
-5. **Import**: Import from this address on the fuji testnet "0xfed6D5fa979FDF38cceB80577C27a8E7F38E78BA".
+5. **Import**: Import from this address on the fuji testnet `0xfed6D5fa979FDF38cceB80577C27a8E7F38E78BA`.
 
 6. **verification**: contract is verified on the fuji testnet for transparency
 
